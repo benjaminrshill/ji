@@ -1,3 +1,4 @@
+const scoreboard = document.getElementById('scoreboard');
 const board = document.querySelector('main');
 const dimensions = [5, 5];
 const line = 4;
@@ -60,9 +61,12 @@ function drop(i, j) {
 function checkWin() {
     checkHorizontal();
     if (!won) checkVertical();
-    if (won && who) {
-        winner = 1;
-    } else if (won) winner = 2;
+    if (!won) checkDiagonalForward();
+    if (!won) checkDiagonalBackward();
+    if (won) {
+        winner = who ? 1 : 2;
+        scoreboard.textContent = 'Player ' + winner + ' wins!';
+    }
 }
 
 function checkHorizontal() {
@@ -71,8 +75,8 @@ function checkHorizontal() {
         row.forEach((pocket, i) => {
             if (row[i] > 0) {
                 if (row[i+1] !== undefined && row[i] === row[i+1]) tally.push(row[i]);
+                if (tally.length > line - 2) return won = true;
             } else tally = [];
-            if (tally.length > line - 2) won = true;
         });
     });
 }
@@ -83,8 +87,40 @@ function checkVertical() {
         for (let j = 0; j < dimensions[1]; j++) {
             if (rows.js[j+1] !== undefined && rows.js[j][i] > 0) {
                 if (rows.js[j][i] === rows.js[j+1][i]) tally.push(rows.js[j][i]);
+                if (tally.length > line - 2) return won = true;
             } else tally = [];
-            if (tally.length > line - 2) won = true;
+        }
+    }
+}
+
+function checkDiagonalForward() {
+    for (let i = 0; i < dimensions[0] - line + 1; i++) {
+        for (let j = 0; j < dimensions[0] - line + 1; j++) {
+            let tally = [];
+            checkNext(i, j);
+            function checkNext(r, d) {
+                if (rows.js[r+1] !== undefined && rows.js[r][d] > 0) {
+                    if (rows.js[r][d] === rows.js[r+1][d+1]) tally.push(rows.js[r][d]);
+                    if (tally.length > line - 2) return won = true;
+                    checkNext(r+1, d+1);
+                } else tally = [];
+            }
+        }
+    }
+}
+
+function checkDiagonalBackward() {
+    for (let i = 4; i > 0; i--) {
+        for (let j = 4; j > 0; j--) {
+            let tally = [];
+            checkNext(i, j);
+            function checkNext(r, d) {
+                if (rows.js[r+1] !== undefined && rows.js[r][d] > 0) {
+                    if (rows.js[r][d] === rows.js[r+1][d-1]) tally.push(rows.js[r][d]);
+                    if (tally.length > line - 2) return won = true;
+                    checkNext(r+1, d-1);
+                } else tally = [];
+            }
         }
     }
 }
