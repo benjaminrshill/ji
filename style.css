@@ -1,6 +1,8 @@
 html {
     --width: 50vmin;
     --height: 50vmin;
+    --width-base: 50;
+    --height-base: 50;
     --dimension-width: 5;
     --dimension-height: 5;
     --player-color-1: #952142;
@@ -73,4 +75,41 @@ main {
 
 .player2 {
     background: var(--player-color-2);
+}
+
+.drop0 {
+    animation: drop0 0.1s ease-in;
+}
+.drop1 {
+    animation: drop1 0.2s ease-in;
+}
+.drop2 {
+    animation: drop2 0.3s ease-in;
+}
+.drop3 {
+    animation: drop3 0.4s ease-in;
+}
+.drop4 {
+    animation: drop4 0.5s ease-in;
+}
+
+@keyframes drop0 {
+    from { transform: translate(0, -10vmin) }
+    to { transform: translate(0) }
+}
+@keyframes drop1 {
+    from { transform: translate(0, -20vmin) }
+    to { transform: translate(0) }
+}
+@keyframes drop2 {
+    from { transform: translate(0, -30vmin) }
+    to { transform: translate(0) }
+}
+@keyframes drop3 {
+    from { transform: translate(0, -40vmin) }
+    to { transform: translate(0) }
+}
+@keyframes drop4 {
+    from { transform: translate(0, -50vmin) }
+    to { transform: translate(0) }
 }

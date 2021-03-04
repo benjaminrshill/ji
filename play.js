@@ -46,6 +46,7 @@ function drop(i, j) {
     const token = document.createElement('div');
     token.classList.add('token');
     token.classList.add(who ? 'player1' : 'player2');
+    token.classList.add('drop' + i);
     rows.js[i][j] = who ? 1 : 2;
     rows.css[i][j].appendChild(token);
     checkWin();
