@@ -3,15 +3,18 @@ html {
     --dimension-height: 5;
     --player-color-1: #aa0c0c;
     --player-color-2: #0404bd;
+    font-family: sans-serif;
+    font-size: 2vmax;
+    text-align: center;
+    color: #3991fd;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: auto;
     min-height: 95vh;
-    font-family: sans-serif;
-    font-size: 2vmax;
-    text-align: center;
-    color: #3991fd;
     background: #000000;
 }
 
