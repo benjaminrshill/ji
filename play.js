@@ -2,12 +2,10 @@ const scoreboard = document.getElementById('scoreboard');
 const board = document.querySelector('main');
 const dimensions = [5, 5];
 const line = 4;
-
 const rows = {
     js: [],
     css: []
 };
-
 let who = true;
 let won = false;
 let winner = 0;
@@ -51,11 +49,6 @@ function drop(i, j) {
     rows.js[i][j] = who ? 1 : 2;
     rows.css[i][j].appendChild(token);
     checkWin();
-    if (won) {
-        document.body.style.backgroundColor = '#564534';
-    } else who = !who;
-    // console.log('___________');
-    // rows.js.forEach(row => console.log(row));
 }
 
 function checkWin() {
@@ -66,19 +59,24 @@ function checkWin() {
     if (won) {
         winner = who ? 1 : 2;
         scoreboard.textContent = 'Player ' + winner + ' wins!';
-    }
+    } else who = !who;
 }
 
 function checkHorizontal() {
-    rows.js.forEach(row => {
+    for (let j = 0; j < dimensions[1]; j++) {
         let tally = [];
-        row.forEach((pocket, i) => {
-            if (row[i] > 0) {
-                if (row[i+1] !== undefined && row[i] === row[i+1]) tally.push(row[i]);
-                if (tally.length > line - 2) return won = true;
-            } else tally = [];
-        });
-    });
+        for (let i = 0; i < dimensions[0]; i++) {
+            if (rows.js[j][i+1] !== undefined && rows.js[j][i] > 0) {
+                if (rows.js[j][i] === rows.js[j][i+1]) {
+                    tally.push(rows.js[j][i]);
+                } else tally = [];
+                if (tally.length > line - 2) {
+                    console.log(tally, 'horizontal');
+                    return won = true;
+                }
+            }
+        }
+    }
 }
 
 function checkVertical() {
@@ -86,9 +84,14 @@ function checkVertical() {
         let tally = [];
         for (let j = 0; j < dimensions[1]; j++) {
             if (rows.js[j+1] !== undefined && rows.js[j][i] > 0) {
-                if (rows.js[j][i] === rows.js[j+1][i]) tally.push(rows.js[j][i]);
-                if (tally.length > line - 2) return won = true;
-            } else tally = [];
+                if (rows.js[j][i] === rows.js[j+1][i]) {
+                    tally.push(rows.js[j][i]);
+                } else tally = [];
+                if (tally.length > line - 2) {
+                    console.log(tally, 'vertical');
+                    return won = true;
+                }
+            }
         }
     }
 }
@@ -100,10 +103,15 @@ function checkDiagonalForward() {
             checkNext(i, j);
             function checkNext(r, d) {
                 if (rows.js[r+1] !== undefined && rows.js[r][d] > 0) {
-                    if (rows.js[r][d] === rows.js[r+1][d+1]) tally.push(rows.js[r][d]);
-                    if (tally.length > line - 2) return won = true;
+                    if (rows.js[r][d] === rows.js[r+1][d+1]) {
+                        tally.push(rows.js[r][d]);
+                    } else tally = [];
+                    if (tally.length > line - 2) {
+                        console.log(tally, 'diagonal forward');
+                        return won = true;
+                    }
                     checkNext(r+1, d+1);
-                } else tally = [];
+                }
             }
         }
     }
@@ -116,13 +124,43 @@ function checkDiagonalBackward() {
             checkNext(i, j);
             function checkNext(r, d) {
                 if (rows.js[r+1] !== undefined && rows.js[r][d] > 0) {
-                    if (rows.js[r][d] === rows.js[r+1][d-1]) tally.push(rows.js[r][d]);
-                    if (tally.length > line - 2) return won = true;
+                    if (rows.js[r][d] === rows.js[r+1][d-1]) {
+                        tally.push(rows.js[r][d]);
+                    } else tally = [];
+                    if (tally.length > line - 2) {
+                        console.log(tally, 'diagonal back');
+                        return won = true;
+                    }
                     checkNext(r+1, d-1);
-                } else tally = [];
+                }
             }
         }
     }
 }
+
+// function computerPlays() {
+//     let r = rows.js.length - 1;
+//     let p = Math.floor(rows.js[r].length / 2);
+//     if (rows.js[r][p] === 0) {
+//         computerClicks(r, p);
+//     } else if (rows.js[r][p-1] === 0) {
+//         computerClicks(r, p-1);
+//     } else if (rows.js[r][p+1] === 0) {
+//         computerClicks(r, p+1);
+//     } else if (rows.js[r][p-2] === 0) {
+//         computerClicks(r, p-2);
+//     } else if (rows.js[r][p+2] === 0) {
+//         computerClicks(r, p+2);
+//     }
+// }
+
+// function computerClicks(r, p) {
+//     const rtc = board.querySelector('.row' + r);
+//     rtc.querySelector('.pocket' + p).click();
+// }
+
+// board.addEventListener('click', function() {
+//     if (!who) computerPlays();
+// });
 
 makeBoard();
