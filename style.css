@@ -1,10 +1,10 @@
 html {
-    --width: 50vmin;
-    --height: 50vmin;
-    --width-base: 50;
-    --height-base: 50;
-    --dimension-width: 5;
+    --dimension-width: 7;
     --dimension-height: 5;
+    --width: calc(var(--dimension-width) * 10vmin);
+    --height: calc(var(--dimension-height) * 10vmin);
+    --width-base: 70;
+    --height-base: 50;
     --player-color-1: #952142;
     --player-color-2: #2d2dba;
     font-family: sans-serif;

@@ -1,5 +1,5 @@
 const board = document.querySelector('main');
-const dimensions = [5, 5];
+const dimensions = [7, 5];
 const line = 4;
 let rows = {
     js: [],
@@ -42,45 +42,45 @@ function newGame() {
 }
 
 function makeBoard() {
-    for (let i = 0; i < dimensions[1]; i++) {
+    for (let r = 0; r < dimensions[1]; r++) {
         const row = document.createElement('div');
-        const name = 'row' + i;
+        const name = 'row' + r;
         row.classList.add('row');
         row.classList.add(name);
         board.appendChild(row);
         rows.js.push([]);
         rows.css.push([]);
-        for (let j = 0; j < dimensions[0]; j++) {
+        for (let c = 0; c < dimensions[0]; c++) {
             const pocket = document.createElement('div');
             pocket.classList.add('pocket');
-            pocket.classList.add('pocket' + j);
+            pocket.classList.add('pocket' + c);
             row.appendChild(pocket);
-            pocket.addEventListener('click', () => checkDrop(dimensions[0]-1, j), false);
-            rows.js[i].push(0);
-            rows.css[i].push(pocket);
+            pocket.addEventListener('click', () => checkDrop(dimensions[1]-1, c), false);
+            rows.js[r].push(0);
+            rows.css[r].push(pocket);
         }
     }
 }
 
-function checkDrop(i, j) {
-    if (!won && i > -1) {
-        if (rows.js[i][j] === 0) {
-            drop(i, j);
+function checkDrop(r, c) {
+    if (!won && r > -1) {
+        if (rows.js[r][c] === 0) {
+            drop(r, c);
         } else {
-            i--;
-            checkDrop(i, j);
+            r--;
+            checkDrop(r, c);
         }
     }
 }
 
-function drop(i, j) {
+function drop(r, c) {
     const token = document.createElement('div');
     token.classList.add('token');
     token.classList.add(who ? 'player1' : 'player2');
-    token.classList.add('drop' + i);
+    token.classList.add('drop' + r);
     document.querySelectorAll('.indicator').forEach(item => item.classList.toggle('hidden'));
-    rows.js[i][j] = who ? 1 : 2;
-    rows.css[i][j].appendChild(token);
+    rows.js[r][c] = who ? 1 : 2;
+    rows.css[r][c].appendChild(token);
     checkWin();
 }
 
@@ -91,6 +91,7 @@ function checkWin() {
     if (!won) checkDiagonalBackward();
     if (won) {
         winner = who ? 1 : 2;
+        document.getElementById('who-won').textContent = 'Player ' + winner + ' wins!';
         who ? scores.player1++ : scores.player2++;
         showScores();
         setScores();
@@ -98,12 +99,12 @@ function checkWin() {
 }
 
 function checkHorizontal() {
-    for (let j = 0; j < dimensions[1]; j++) {
+    for (let r = 0; r < dimensions[1]; r++) {
         let tally = [];
-        for (let i = 0; i < dimensions[0]; i++) {
-            if (rows.js[j][i+1] !== undefined && rows.js[j][i] > 0) {
-                if (rows.js[j][i] === rows.js[j][i+1]) {
-                    tally.push(rows.js[j][i]);
+        for (let c = 0; c < dimensions[0]; c++) {
+            if (rows.js[r][c+1] !== undefined && rows.js[r][c] > 0) {
+                if (rows.js[r][c] === rows.js[r][c+1]) {
+                    tally.push(rows.js[r][c]);
                 } else tally = [];
                 if (tally.length > line - 2) {
                     console.log(tally, 'horizontal');
@@ -115,12 +116,12 @@ function checkHorizontal() {
 }
 
 function checkVertical() {
-    for (let i = 0; i < dimensions[0]; i++) {
+    for (let c = 0; c < dimensions[0]; c++) {
         let tally = [];
-        for (let j = 0; j < dimensions[1]; j++) {
-            if (rows.js[j+1] !== undefined && rows.js[j][i] > 0) {
-                if (rows.js[j][i] === rows.js[j+1][i]) {
-                    tally.push(rows.js[j][i]);
+        for (let r = 0; r < dimensions[1]; r++) {
+            if (rows.js[r+1] !== undefined && rows.js[r][c] > 0) {
+                if (rows.js[r][c] === rows.js[r+1][c]) {
+                    tally.push(rows.js[r][c]);
                 } else tally = [];
                 if (tally.length > line - 2) {
                     console.log(tally, 'vertical');
@@ -132,20 +133,20 @@ function checkVertical() {
 }
 
 function checkDiagonalForward() {
-    for (let i = 0; i < dimensions[0] - line + 1; i++) {
-        for (let j = 0; j < dimensions[0] - line + 1; j++) {
+    for (let c = 0; c < dimensions[0] - line + 1; c++) {
+        for (let r = 0; r < dimensions[1] - line + 1; r++) {
             let tally = [];
-            checkNext(i, j);
-            function checkNext(r, d) {
-                if (rows.js[r+1] !== undefined && rows.js[r][d] > 0) {
-                    if (rows.js[r][d] === rows.js[r+1][d+1]) {
-                        tally.push(rows.js[r][d]);
+            checkNext(r, c);
+            function checkNext(s, d) {
+                if (rows.js[s+1] !== undefined && rows.js[s][d] > 0) {
+                    if (rows.js[s][d] === rows.js[s+1][d+1]) {
+                        tally.push(rows.js[s][d]);
                     } else tally = [];
                     if (tally.length > line - 2) {
                         console.log(tally, 'diagonal forward');
                         return won = true;
                     }
-                    checkNext(r+1, d+1);
+                    checkNext(s+1, d+1);
                 }
             }
         }
@@ -153,25 +154,50 @@ function checkDiagonalForward() {
 }
 
 function checkDiagonalBackward() {
-    for (let i = 4; i > 0; i--) {
-        for (let j = 4; j > 0; j--) {
+    for (let c = dimensions[0] - 1; c > 0; c--) {
+        for (let r = dimensions[1] - 1; r > 0; r--) {
             let tally = [];
-            checkNext(i, j);
-            function checkNext(r, d) {
-                if (rows.js[r+1] !== undefined && rows.js[r][d] > 0) {
-                    if (rows.js[r][d] === rows.js[r+1][d-1]) {
-                        tally.push(rows.js[r][d]);
+            checkNext(r, c);
+            function checkNext(s, d) {
+                if (rows.js[s+1] !== undefined && rows.js[s][d] > 0) {
+                    if (rows.js[s][d] === rows.js[s+1][d-1]) {
+                        tally.push(rows.js[s][d]);
                     } else tally = [];
                     if (tally.length > line - 2) {
                         console.log(tally, 'diagonal back');
                         return won = true;
                     }
-                    checkNext(r+1, d-1);
+                    checkNext(s+1, d-1);
                 }
             }
         }
     }
 }
+
+// function computerPlays() {
+//     let r = rows.js.length - 1;
+//     let p = Math.floor(rows.js[r].length / 2);
+//     if (rows.js[r][p] === 0) {
+//         computerClicks(r, p);
+//     } else if (rows.js[r][p-1] === 0) {
+//         computerClicks(r, p-1);
+//     } else if (rows.js[r][p+1] === 0) {
+//         computerClicks(r, p+1);
+//     } else if (rows.js[r][p-2] === 0) {
+//         computerClicks(r, p-2);
+//     } else if (rows.js[r][p+2] === 0) {
+//         computerClicks(r, p+2);
+//     }
+// }
+
+// function computerClicks(r, p) {
+//     const rtc = board.querySelector('.row' + r);
+//     rtc.querySelector('.pocket' + p).click();
+// }
+
+// board.addEventListener('click', function() {
+//     if (!who) computerPlays();
+// });
 
 document.getElementById('reset-scores').addEventListener('click', resetScores, false);
 document.getElementById('new-game').addEventListener('click', newGame, false);
