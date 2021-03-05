@@ -154,8 +154,8 @@ function checkDiagonalForward() {
 }
 
 function checkDiagonalBackward() {
-    for (let c = dimensions[0] - 1; c > 0; c--) {
-        for (let r = dimensions[1] - 1; r > 0; r--) {
+    for (let c = dimensions[0]; c > -1; c--) {
+        for (let r = dimensions[1]; r > -1; r--) {
             let tally = [];
             checkNext(r, c);
             function checkNext(s, d) {
