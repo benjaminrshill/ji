@@ -174,31 +174,6 @@ function checkDiagonalBackward() {
     }
 }
 
-// function computerPlays() {
-//     let r = rows.js.length - 1;
-//     let p = Math.floor(rows.js[r].length / 2);
-//     if (rows.js[r][p] === 0) {
-//         computerClicks(r, p);
-//     } else if (rows.js[r][p-1] === 0) {
-//         computerClicks(r, p-1);
-//     } else if (rows.js[r][p+1] === 0) {
-//         computerClicks(r, p+1);
-//     } else if (rows.js[r][p-2] === 0) {
-//         computerClicks(r, p-2);
-//     } else if (rows.js[r][p+2] === 0) {
-//         computerClicks(r, p+2);
-//     }
-// }
-
-// function computerClicks(r, p) {
-//     const rtc = board.querySelector('.row' + r);
-//     rtc.querySelector('.pocket' + p).click();
-// }
-
-// board.addEventListener('click', function() {
-//     if (!who) computerPlays();
-// });
-
 document.getElementById('reset-scores').addEventListener('click', resetScores, false);
 document.getElementById('new-game').addEventListener('click', newGame, false);
 
