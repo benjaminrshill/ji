@@ -1,14 +1,45 @@
-const scoreboard = document.getElementById('scoreboard');
 const board = document.querySelector('main');
 const dimensions = [5, 5];
 const line = 4;
-const rows = {
+let rows = {
     js: [],
     css: []
 };
+let scores = {
+    player1: 0,
+    player2: 0
+}
 let who = true;
 let won = false;
 let winner = 0;
+
+function getScores() {
+    if (localStorage.getItem('jiScore')) scores = JSON.parse(localStorage.getItem('jiScore'));
+    showScores();
+}
+
+function setScores() {
+    localStorage.setItem('jiScore', JSON.stringify(scores));
+}
+
+function showScores() {
+    document.getElementById('p1score').textContent = scores.player1;
+    document.getElementById('p2score').textContent = scores.player2;
+}
+
+function resetScores() {
+    scores.player1 = 0;
+    scores.player2 = 0;
+}
+
+function newGame() {
+    who = true;
+    won = false;
+    winner = 0;
+    rows = {js: [], css: []};
+    board.querySelectorAll('.row').forEach(row => board.removeChild(row));
+    makeBoard();
+}
 
 function makeBoard() {
     for (let i = 0; i < dimensions[1]; i++) {
@@ -24,7 +55,7 @@ function makeBoard() {
             pocket.classList.add('pocket');
             pocket.classList.add('pocket' + j);
             row.appendChild(pocket);
-            pocket.addEventListener('click', () => checkDrop(dimensions[0]-1, j));
+            pocket.addEventListener('click', () => checkDrop(dimensions[0]-1, j), false);
             rows.js[i].push(0);
             rows.css[i].push(pocket);
         }
@@ -32,7 +63,7 @@ function makeBoard() {
 }
 
 function checkDrop(i, j) {
-    if (i > -1) {
+    if (!won && i > -1) {
         if (rows.js[i][j] === 0) {
             drop(i, j);
         } else {
@@ -47,6 +78,7 @@ function drop(i, j) {
     token.classList.add('token');
     token.classList.add(who ? 'player1' : 'player2');
     token.classList.add('drop' + i);
+    document.querySelectorAll('.indicator').forEach(item => item.classList.toggle('hidden'));
     rows.js[i][j] = who ? 1 : 2;
     rows.css[i][j].appendChild(token);
     checkWin();
@@ -59,7 +91,9 @@ function checkWin() {
     if (!won) checkDiagonalBackward();
     if (won) {
         winner = who ? 1 : 2;
-        scoreboard.textContent = 'Player ' + winner + ' wins!';
+        who ? scores.player1++ : scores.player2++;
+        showScores();
+        setScores();
     } else who = !who;
 }
 
@@ -139,29 +173,8 @@ function checkDiagonalBackward() {
     }
 }
 
-// function computerPlays() {
-//     let r = rows.js.length - 1;
-//     let p = Math.floor(rows.js[r].length / 2);
-//     if (rows.js[r][p] === 0) {
-//         computerClicks(r, p);
-//     } else if (rows.js[r][p-1] === 0) {
-//         computerClicks(r, p-1);
-//     } else if (rows.js[r][p+1] === 0) {
-//         computerClicks(r, p+1);
-//     } else if (rows.js[r][p-2] === 0) {
-//         computerClicks(r, p-2);
-//     } else if (rows.js[r][p+2] === 0) {
-//         computerClicks(r, p+2);
-//     }
-// }
-
-// function computerClicks(r, p) {
-//     const rtc = board.querySelector('.row' + r);
-//     rtc.querySelector('.pocket' + p).click();
-// }
-
-// board.addEventListener('click', function() {
-//     if (!who) computerPlays();
-// });
+document.getElementById('reset-scores').addEventListener('click', resetScores, false);
+document.getElementById('new-game').addEventListener('click', newGame, false);
 
 makeBoard();
+getScores();

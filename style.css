@@ -26,19 +26,34 @@ body {
     background: #000000;
 }
 
+#container {
+    width: var(--width);
+    margin: auto;
+}
+
 #scoreboard {
+    display: flex;
+    justify-content: space-between;
     width: var(--width);
     height: 50px;
-    margin: 5vh auto;
+    margin: 10px auto;
     color: #eee;
     line-height: 50px;
-    background: #242042;
+}
+
+.control {
+    appearance: none;
+    min-width: 20%;
+    margin: 50px auto;
+    padding: 5px 10px;
+    color: #ccc;
+    background: rgba(7, 53, 104, 0.5);
+    border: 0;
 }
 
 main {
     display: grid;
     grid-template-rows: repeat(var(--dimension-height), 1fr);
-    width: var(--width);
     height: var(--height);
     margin:  auto;
     background: rgba(5, 5, 5, 0.5);
@@ -75,6 +90,23 @@ main {
 
 .player2 {
     background: var(--player-color-2);
+}
+
+#indicator-container {
+    display: flex;
+    justify-content: space-between;
+    height: 20px;
+    margin: 10px auto;
+}
+
+.indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+}
+
+.hidden {
+    opacity: 0.4;
 }
 
 .drop0 {
