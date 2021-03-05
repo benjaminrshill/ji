@@ -30,6 +30,8 @@ function showScores() {
 function resetScores() {
     scores.player1 = 0;
     scores.player2 = 0;
+    setScores();
+    showScores();
 }
 
 function newGame() {
@@ -93,8 +95,8 @@ function checkWin() {
         winner = who ? 1 : 2;
         document.getElementById('who-won').textContent = 'Player ' + winner + ' wins!';
         who ? scores.player1++ : scores.player2++;
-        showScores();
         setScores();
+        showScores();
     } else who = !who;
 }
 
