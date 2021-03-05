@@ -21,7 +21,7 @@ html {
 body {
     margin: auto;
     min-height: 95vh;
-    background: #000000;
+    background: #000;
 }
 
 #container {
@@ -38,10 +38,19 @@ body {
     line-height: 50px;
 }
 
+#controls {
+    display: flex;
+    justify-content: space-between;
+    width: var(--width);
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    margin: auto;
+}
+
 .control {
     appearance: none;
     min-width: 20%;
-    margin: 50px auto;
+    margin: 0;
     padding: 5px 10px;
     color: #ccc;
     background: rgba(7, 53, 104, 0.5);
@@ -67,7 +76,7 @@ main {
     position: relative;
     width: var(--pocket-width);
     height: var(--pocket-width);
-    margin: 1px;
+    outline: 2px solid #000;
     background: rgba(7, 53, 104, 0.5);
 }
 
