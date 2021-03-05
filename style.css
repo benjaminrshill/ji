@@ -1,10 +1,8 @@
 html {
     --dimension-width: 7;
     --dimension-height: 5;
-    --width: calc(var(--dimension-width) * 10vmin);
-    --height: calc(var(--dimension-height) * 10vmin);
-    --width-base: 70;
-    --height-base: 50;
+    --pocket-width: calc(75vmin / var(--dimension-width));
+    --width: 75vmin;
     --player-color-1: #952142;
     --player-color-2: #2d2dba;
     font-family: sans-serif;
@@ -15,8 +13,8 @@ html {
 
 @media screen and (max-width: 800px) {
     html {
-        --width: 95vmin;
-        --height: 95vmin;
+        --pocket-width: calc(90vw / var(--dimension-width));
+        --width: 95vw;
     }
 }
 
@@ -34,7 +32,6 @@ body {
 #scoreboard {
     display: flex;
     justify-content: space-between;
-    width: var(--width);
     height: 50px;
     margin: 10px auto;
     color: #eee;
@@ -54,8 +51,7 @@ body {
 main {
     display: grid;
     grid-template-rows: repeat(var(--dimension-height), 1fr);
-    height: var(--height);
-    margin:  auto;
+    margin: auto;
     background: rgba(5, 5, 5, 0.5);
 }
 
@@ -69,9 +65,9 @@ main {
 
 .pocket {
     position: relative;
-    width: 95%;
-    height: 95%;
-    margin: auto;
+    width: var(--pocket-width);
+    height: var(--pocket-width);
+    margin: 1px;
     background: rgba(7, 53, 104, 0.5);
 }
 
