@@ -2,4 +2,4 @@
 
 [live version](https://benjaminrshill.github.io/ji/)
 
-Memory game
+Connect 4 in a row to win
