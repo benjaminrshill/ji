@@ -10,6 +10,7 @@ let scores = {
     player2: 0
 }
 let who = true;
+let lastWho = true;
 let won = false;
 let winner = 0;
 
@@ -27,6 +28,12 @@ function showScores() {
     document.getElementById('p2score').textContent = scores.player2;
 }
 
+function announceWinner(clear = false) {
+    if (clear) {
+        document.getElementById('who-won').innerText = '';
+    } else document.getElementById('who-won').innerText = 'Player ' + winner + ' wins!';
+}
+
 function resetScores() {
     scores.player1 = 0;
     scores.player2 = 0;
@@ -35,12 +42,21 @@ function resetScores() {
 }
 
 function newGame() {
-    who = true;
+    who = !lastWho;
+    lastWho = !lastWho;
     won = false;
     winner = 0;
     rows = {js: [], css: []};
     board.querySelectorAll('.row').forEach(row => board.removeChild(row));
+    announceWinner(true);
     makeBoard();
+    if (who) {
+        document.querySelectorAll('.indicator player1').classList.remove('hidden');
+        document.querySelectorAll('.indicator player2').classList.add('hidden');
+    } else {
+        document.querySelectorAll('.indicator player1').classList.add('hidden');
+        document.querySelectorAll('.indicator player2').classList.remove('hidden');
+    }
 }
 
 function makeBoard() {
@@ -93,11 +109,12 @@ function checkWin() {
     if (!won) checkDiagonalBackward();
     if (won) {
         winner = who ? 1 : 2;
-        document.getElementById('who-won').textContent = 'Player ' + winner + ' wins!';
         who ? scores.player1++ : scores.player2++;
+        announceWinner();
         setScores();
         showScores();
-    } else who = !who;
+    }
+    who = !who;
 }
 
 function checkHorizontal() {
