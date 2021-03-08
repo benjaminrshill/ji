@@ -51,11 +51,11 @@ function newGame() {
     announceWinner(true);
     makeBoard();
     if (who) {
-        document.querySelectorAll('.indicator player1').classList.remove('hidden');
-        document.querySelectorAll('.indicator player2').classList.add('hidden');
+        document.querySelector('.indicator.player1').classList.remove('hidden');
+        document.querySelector('.indicator.player2').classList.add('hidden');
     } else {
-        document.querySelectorAll('.indicator player1').classList.add('hidden');
-        document.querySelectorAll('.indicator player2').classList.remove('hidden');
+        document.querySelector('.indicator.player1').classList.add('hidden');
+        document.querySelector('.indicator.player2').classList.remove('hidden');
     }
 }
 
