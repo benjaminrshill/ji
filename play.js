@@ -117,17 +117,25 @@ function checkWin() {
     who = !who;
 }
 
+function makeGolden(tally) {
+    tally.forEach(pocket => {
+        let row = pocket[0], col = pocket[1];
+        rows.css[row][col].firstChild.classList.add('golden');
+    });
+    won = true;
+}
+
 function checkHorizontal() {
     for (let r = 0; r < dimensions[1]; r++) {
         let tally = [];
         for (let c = 0; c < dimensions[0]; c++) {
             if (rows.js[r][c+1] !== undefined && rows.js[r][c] > 0) {
                 if (rows.js[r][c] === rows.js[r][c+1]) {
-                    tally.push(rows.js[r][c]);
+                    tally.push([r, c]);
                 } else tally = [];
                 if (tally.length > line - 2) {
-                    console.log(tally, 'horizontal');
-                    return won = true;
+                    tally.push([r, c+1]);
+                    return makeGolden(tally);
                 }
             }
         }
@@ -140,11 +148,11 @@ function checkVertical() {
         for (let r = 0; r < dimensions[1]; r++) {
             if (rows.js[r+1] !== undefined && rows.js[r][c] > 0) {
                 if (rows.js[r][c] === rows.js[r+1][c]) {
-                    tally.push(rows.js[r][c]);
+                    tally.push([r, c]);
                 } else tally = [];
                 if (tally.length > line - 2) {
-                    console.log(tally, 'vertical');
-                    return won = true;
+                    tally.push([r+1, c]);
+                    return makeGolden(tally);
                 }
             }
         }
@@ -159,11 +167,11 @@ function checkDiagonalForward() {
             function checkNext(s, d) {
                 if (rows.js[s+1] !== undefined && rows.js[s][d] > 0) {
                     if (rows.js[s][d] === rows.js[s+1][d+1]) {
-                        tally.push(rows.js[s][d]);
+                        tally.push([s, d]);
                     } else tally = [];
                     if (tally.length > line - 2) {
-                        console.log(tally, 'diagonal forward');
-                        return won = true;
+                        tally.push([s+1, d+1]);
+                        return makeGolden(tally);
                     }
                     checkNext(s+1, d+1);
                 }
@@ -180,11 +188,11 @@ function checkDiagonalBackward() {
             function checkNext(s, d) {
                 if (rows.js[s+1] !== undefined && rows.js[s][d] > 0) {
                     if (rows.js[s][d] === rows.js[s+1][d-1]) {
-                        tally.push(rows.js[s][d]);
+                        tally.push([s, d]);
                     } else tally = [];
                     if (tally.length > line - 2) {
-                        console.log(tally, 'diagonal back');
-                        return won = true;
+                        tally.push([s+1, d-1]);
+                        return makeGolden(tally);
                     }
                     checkNext(s+1, d-1);
                 }

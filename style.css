@@ -114,6 +114,10 @@ main {
     opacity: 0.4;
 }
 
+.golden {
+    background: #b8860b;
+}
+
 .drop0 {
     animation: drop0 0.1s ease-in;
 }
