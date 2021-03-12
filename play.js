@@ -56,6 +56,7 @@ function newGame() {
     } else {
         document.querySelector('.indicator.player1').classList.add('hidden');
         document.querySelector('.indicator.player2').classList.remove('hidden');
+        computerPlays();
     }
 }
 
