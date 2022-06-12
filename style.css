@@ -109,11 +109,14 @@ main {
 .indicator {
     width: 20px;
     height: 20px;
+    outline: 2px solid rgb(252, 54, 206);
     border-radius: 100%;
+    transition: all 0.3s ease;
 }
 
 .hidden {
     opacity: 0.4;
+    outline: none;
 }
 
 .golden {
